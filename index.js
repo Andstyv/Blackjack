@@ -10,6 +10,7 @@ let isAlive = false;
 let message = "";
 let messageEl = document.getElementById("message-el");
 let sumEl = document.getElementById("sum-el");
+let sumDealer = document.getElementById("sum-dealer");
 let cardsEl = document.getElementById("cards-el");
 let playerEl = document.getElementById("player-el");
 let dealer = document.getElementById("dealer-el");
@@ -33,14 +34,21 @@ function getRandomCard() {
 
 function showDealer() {
   if (isAlive) {
-    let dealerRandom1 = Math.floor(Math.random() * 13) + 1;
-    let dealerRandom2 = Math.floor(Math.random() * 13) + 1;
+    let dealerRandom1 = getRandomCard();
+    let dealerRandom2 = getRandomCard();
     let dealerTotal = dealerRandom1 + dealerRandom2;
 
-    dealer.textContent = "Cards: " + dealerRandom1 + ", " + dealerRandom2;
-    isAlive = false;
-    console.log(dealerTotal);
-    console.log(sum);
+    if (dealerTotal <= 16) {
+      let dealerRandom3 = getRandomCard();
+      dealer.textContent = "Cards: " + dealerRandom1 + ", " + dealerRandom2 + ", " + dealerRandom3;
+      sumDealer.textContent = dealerRandom1 + dealerRandom2 + dealerRandom3;
+      isAlive = false;
+    } else {
+      dealer.textContent = "Cards: " + dealerRandom1 + ", " + dealerRandom2;
+      sumDealer.textContent = dealerRandom1 + dealerRandom2;
+      isAlive = false;
+    }
+
     if (dealerTotal >= sum && dealerTotal <= 21) {
       gameMessage.textContent = "YOU LOSE";
       player.chips -= 100;
@@ -59,13 +67,13 @@ function startGame() {
   let firstCard = getRandomCard();
   let secondCard = getRandomCard();
 
-  cardImage1.style.backgroundImage = `url(img/${firstCard}C.png)`;
-  cardImage2.style.backgroundImage = `url(img/${secondCard}C.png)`;
+  //   cardImage1.style.backgroundImage = `url(img/${firstCard}C.png)`;
+  //   cardImage2.style.backgroundImage = `url(img/${secondCard}C.png)`;
 
   // background-image: url(img/2C.png);
 
-  console.log(firstCard, secondCard);
   cards = [firstCard, secondCard];
+  sum = firstCard + secondCard;
   sum = firstCard + secondCard;
   dealer.textContent = "";
   renderGame();
@@ -99,7 +107,6 @@ function newCard() {
     let card = getRandomCard();
     sum += card;
     cards.push(card);
-    console.log(cards);
     renderGame();
   }
 }
